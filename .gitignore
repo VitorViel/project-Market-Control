@@ -1,0 +1,27 @@
+# Node modules
+frontend/node_modules
+backend/node_modules
+
+# Builds
+frontend/dist
+frontend/build
+
+# Ambiente
+.env
+.env.local
+
+# SQLite database
+backend/db.sqlite
+backend/*.sqlite
+
+# Logs e cache
+*.log
+.cache
+
+# IDEs
+.vscode
+.idea
+
+# SO
+.DS_Store
+Thumbs.db
