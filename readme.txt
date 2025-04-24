@@ -16,7 +16,6 @@ Inclui login, cadastro, painel administrativo e permissões por cargo (admin/ven
 
 1. Clone o repositório:
 
-```bash
 git clone https://github.com/VitorViel/project-Market-Control.git
 cd nome-do-repo
 
