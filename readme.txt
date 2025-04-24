@@ -51,8 +51,8 @@ http://localhost:5173
 
 🔐 Login de admin para testes (caso banco venha pré-carregado):
 
-Email: admin@teste.com  
-Senha: 123456
+Email: admin@teste 
+Senha: 123123123
 
 ---
 
