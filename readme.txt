@@ -66,9 +66,7 @@ Caso o banco não venha pré-carregado, execute o app "criar_admin.bat", localiz
 
 ---
 
-====================
-Versões recomendadas
-====================
+🧰 Tecnologias e versões utilizadas
 
 (TODAS AS VERSÕES JÁ ESTÃO APLICADAS NOS PACKAGE-JSON's, TANTO FRONTEND COMO BACKEND)
 
