@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
@@ -11,18 +12,10 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       await login(email, password);
+      toast.success("Login realizado com sucesso!");
       navigate("/dashboard");
-    } catch (err) {
-      const handleLogin = async () => {
-        try {
-          await login(email, password);
-          toast.success("Login realizado com sucesso!");
-          navigate("/dashboard");
-        } catch (err) {
-          toast.error("Credenciais inválidas");
-        }
-      };
-      
+    } catch (err: any) {
+      toast.error(err.message || "Credenciais inválidas");
     }
   };
 

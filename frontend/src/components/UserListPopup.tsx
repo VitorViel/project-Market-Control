@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { getAllUsers, updateUserRole } from "../services/userService";
 import toast from "react-hot-toast";
@@ -40,6 +41,21 @@ const UserListPopup = ({ onClose }: Props) => {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    const token = localStorage.getItem("token");
+    try {
+      await axios.delete(`http://localhost:3001/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Usuário deletado com sucesso!");
+      setUsers((prev) => prev.filter((u) => u.id !== id));
+    } catch {
+      toast.error("Erro ao deletar usuário");
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -49,10 +65,7 @@ const UserListPopup = ({ onClose }: Props) => {
       <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-2xl">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">Usuários cadastrados</h2>
-          <button
-            className="text-red-600 hover:underline"
-            onClick={onClose}
-          >
+          <button className="text-red-600 hover:underline" onClick={onClose}>
             Fechar
           </button>
         </div>
@@ -66,6 +79,7 @@ const UserListPopup = ({ onClose }: Props) => {
                 <th className="p-2">Nome</th>
                 <th className="p-2">Email</th>
                 <th className="p-2">Cargo</th>
+                <th className="p-2">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -82,6 +96,14 @@ const UserListPopup = ({ onClose }: Props) => {
                       <option value="vendedor">vendedor</option>
                       <option value="admin">admin</option>
                     </select>
+                  </td>
+                  <td className="p-2">
+                    <button
+                      className="text-red-600 hover:underline"
+                      onClick={() => handleDelete(user.id)}
+                    >
+                      Deletar
+                    </button>
                   </td>
                 </tr>
               ))}

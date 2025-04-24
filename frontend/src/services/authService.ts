@@ -11,16 +11,25 @@ export const register = async (email: string, password: string, fullName: string
 };
 
 export const login = async (email: string, password: string) => {
-  const res = await fetch(`${API}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
-  if (!res.ok) throw new Error("Erro no login");
+  try {
+    const res = await fetch(`${API}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const data = await res.json();
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("user", JSON.stringify(data.user)); // <-- aqu  
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || "Erro no login");
+    }
+
+    const data = await res.json();
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    return data;
+  } catch (err: any) {
+    throw new Error(err.message || "Erro ao conectar com o servidor");
+  }
 };
 
 export const getToken = () => localStorage.getItem("token");

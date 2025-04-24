@@ -1,0 +1,66 @@
+
+📦 PROJETO: MARKET-CONTROL
+==========================
+
+📝 DESCRIÇÃO GERAL
+------------------
+Sistema de controle de mercado com:
+- Login e registro de usuários
+- Autenticação via JWT
+- Cadastro, edição e remoção de produtos
+- Painel único para vendedores e admins
+- Admins podem promover usuários e deletar outros usuários
+- UI responsiva com Tailwind e React 18 (Vite)
+
+🔐 CONTROLE DE ACESSO
+---------------------
+- Todo novo usuário é cadastrado como 'vendedor'
+- Admins têm acesso exclusivo ao botão "Lista de usuários"
+- Ações administrativas exigem token JWT e verificação de role
+- Backend usa bcrypt para verificar senhas no login
+
+🛠️ FUNCIONALIDADES IMPLEMENTADAS
+---------------------------------
+✅ Cadastro e login com verificação de senha
+✅ Logout limpa token e redireciona
+✅ Painel 'Dashboard' exibe produtos cadastrados
+✅ CRUD completo de produtos
+✅ Admin pode editar 'role' de qualquer usuário
+✅ Admin pode deletar usuários
+✅ Toasts de feedback (centralizados no topo)
+✅ Proteção de rotas implementada (PrivateRoute)
+
+📁 ESTRUTURA DO PROJETO
+-----------------------
+📦 frontend/
+├── index.html
+├── main.tsx (usava Toaster duplicado - corrigido)
+├── App.tsx (Toaster centralizado aqui)
+├── pages/Login.tsx (tratamento de erros de login com toast)
+├── pages/Register.tsx
+├── pages/Dashboard.tsx (botões "Sair" e "Lista de usuários" ajustados)
+├── components/UserListPopup.tsx (com botão individual de "Deletar")
+├── services/authService.ts (tratamento de erro no login)
+├── services/productService.ts
+├── services/userService.ts
+├── routes/PrivateRoute.tsx
+└── types/
+
+📦 backend/
+├── index.js (roteamento, JWT, auth, role check, delete user)
+├── db.sqlite (banco real com tabelas users e products)
+├── package.json (script "server" com nodemon)
+
+🧪 TESTES E FIXES IMPORTANTES
+-----------------------------
+- Login de usuário inexistente agora mostra erro no toast
+- Toasts duplicados resolvidos (remoção do Toaster em main.tsx)
+- Correção visual do botão "Lista de usuários" (abaixo do "Sair")
+- Toasts centralizados com <Toaster position="top-center" />
+
+🗂️ VERSÃO ATUAL
+---------------
+✔️ Versão 1.0 estável salva oficialmente após revisão completa.
+✔️ Tudo testado: login, permissões, toasts, painel, exclusões.
+
+

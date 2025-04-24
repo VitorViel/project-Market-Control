@@ -56,7 +56,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       {/* Topo com usuário e logout */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-start mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">
             Bem-vindo, {(user as any).fullName || "Usuário"}
@@ -65,26 +65,29 @@ export default function Dashboard() {
             Cargo: {(user as any).role || "Não informado"}
           </p>
         </div>
-        <button
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-          onClick={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            navigate("/");
-          }}
-        >
-          Sair
-        </button>
-      </div>
-      {(user as any).role === "admin" && (
-        <button
-          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 ml-4"
-          onClick={() => setUserPopupOpen(true)}
-        >
-          Lista de usuários
-        </button>
-      )}
 
+        <div className="flex flex-col items-end gap-2">
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              navigate("/");
+            }}
+          >
+            Sair
+          </button>
+
+          {(user as any).role === "admin" && (
+            <button
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+              onClick={() => setUserPopupOpen(true)}
+            >
+              Lista de usuários
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Título e botão */}
       <div className="flex justify-between items-center mb-4">
@@ -103,7 +106,6 @@ export default function Dashboard() {
       {userPopupOpen && (
         <UserListPopup onClose={() => setUserPopupOpen(false)} />
       )}
-
 
       {/* Lista de produtos */}
       <div className="bg-white rounded shadow p-4">
@@ -128,10 +130,16 @@ export default function Dashboard() {
                   <td className="p-2">R$ {p.price.toFixed(2)}</td>
                   <td className="p-2">{p.quantity}</td>
                   <td className="p-2 flex gap-2">
-                    <button className="text-yellow-600" onClick={() => handleEdit(p)}>
+                    <button
+                      className="text-yellow-600"
+                      onClick={() => handleEdit(p)}
+                    >
                       Editar
                     </button>
-                    <button className="text-red-600" onClick={() => handleDelete(p.id)}>
+                    <button
+                      className="text-red-600"
+                      onClick={() => handleDelete(p.id)}
+                    >
                       Excluir
                     </button>
                   </td>

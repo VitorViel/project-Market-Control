@@ -178,6 +178,13 @@ app.put("/users/:id/role", verifyToken, checkAdmin, async (req, res) => {
   res.send();
 });
 
+app.delete("/users/:id", verifyToken, checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  const db = await dbPromise;
+  await db.run("DELETE FROM users WHERE id = ?", [id]);
+  res.status(200).json({ message: "Usuário deletado com sucesso" });
+});
+
 
 // Inicialização do servidor
 const PORT = 3001;
