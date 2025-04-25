@@ -3,6 +3,7 @@ import { Product } from "../types/Product";
 import { addProduct, updateProduct } from "../services/productService";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import { Save, X } from "lucide-react";
 
 interface Props {
   onClose: () => void;
@@ -19,11 +20,11 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
-  const idInputRef = useRef<HTMLInputElement>(null); // ✅ cria a referência para o input
+  const idInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (product) setForm(product);
-    idInputRef.current?.focus(); // ✅ foca automaticamente no abrir
+    idInputRef.current?.focus();
   }, [product]);
 
   const handleSubmit = async () => {
@@ -67,10 +68,11 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
           {product ? "Editar" : "Novo"} Produto
         </h2>
 
+        {/* Campos de input */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">ID</label>
           <input
-            ref={idInputRef} // ✅ adiciona ref aqui
+            ref={idInputRef}
             className={`w-full p-2 border rounded bg-white text-black dark:text-black ${errors.id ? "border-red-500" : ""}`}
             disabled={!!product}
             value={form.id}
@@ -107,19 +109,33 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
           />
         </div>
 
+        {/* Botões */}
         <div className="flex justify-between">
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0px 0px 8px rgba(59, 130, 246, 0.6)", // Azul para salvar
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
             onClick={handleSubmit}
+            title="Salvar Produto"
           >
-            Salvar
-          </button>
-          <button
-            className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+            <Save size={18} /> Salvar
+          </motion.button>
+
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0px 0px 8px rgba(156, 163, 175, 0.6)", // Cinza para cancelar
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition"
             onClick={onClose}
+            title="Cancelar"
           >
-            Cancelar
-          </button>
+            <X size={18} /> Cancelar
+          </motion.button>
         </div>
       </motion.div>
     </div>

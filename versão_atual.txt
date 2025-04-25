@@ -12,55 +12,56 @@ Sistema de controle de mercado com:
 - Admins podem promover usuários e deletar outros usuários
 - UI responsiva com Tailwind e React 18 (Vite)
 
-🔐 CONTROLE DE ACESSO
----------------------
-- Todo novo usuário é cadastrado como 'vendedor'
-- Admins têm acesso exclusivo ao botão "Lista de usuários"
-- Ações administrativas exigem token JWT e verificação de role
-- Backend usa bcrypt para verificar senhas no login
+📄 README - Alterações Market-Control (Versão 1.5)
 
-🛠️ FUNCIONALIDADES IMPLEMENTADAS
----------------------------------
-✅ Cadastro e login com verificação de senha
-✅ Logout limpa token e redireciona
-✅ Painel 'Dashboard' exibe produtos cadastrados
-✅ CRUD completo de produtos
-✅ Admin pode editar 'role' de qualquer usuário
-✅ Admin pode deletar usuários
-✅ Toasts de feedback (centralizados no topo)
-✅ Proteção de rotas implementada (PrivateRoute)
+📌 Base
+- Backend: Versão 1.0 estável (sem alterações)
+- Frontend: Atualizado com melhorias visuais e estruturais
 
-📁 ESTRUTURA DO PROJETO
------------------------
-📦 frontend/
+✅ Melhorias Aplicadas no Frontend
+
+Interface e Experiência do Usuário
+- 🌗 Modo Claro/Escuro: Adicionado botão de alternância de tema (ícones de lua/sol) com persistência automática.
+- 🎞️ Animações Suaves: Implementadas animações de entrada/saída usando Framer Motion para páginas e popups.
+- 🚪 Transições de Páginas: Todas as rotas (Login, Register, Dashboard) com transição suave.
+- 💬 Sistema de Toasts Melhorado: Feedback de ações agora exibido de forma centralizada e estilizada.
+- 🔍 AutoFocus em Popups: Campo ID do produto recebe foco automático ao abrir a janela de cadastro/edição.
+- 🦴 Skeleton Loaders: Indicadores visuais durante carregamento de produtos e usuários.
+- 🖋️ Ícones em Ações: Botões de Editar (✏️) e Deletar (🗑️) com hover animado nos produtos e usuários.
+- 🧩 Responsividade Aprimorada: Layout adaptado para dispositivos menores, incluindo posicionamento do botão de tema.
+
+Estrutura de Código
+- 🧱 Projeto Frontend migrado para Vite + React 18 + TypeScript + TailwindCSS
+- 🔗 React Router DOM implementado: Rotas entre páginas configuradas com animações.
+- 🎨 DarkMode controlado por next-themes: Persistência de tema no navegador.
+- 📁 Organização Modular: Componentes criados para ThemeToggle, PageWrapper, e melhorias de estilização.
+- ⚡ TailwindCSS otimizado: Uso de classes utilitárias modernas no projeto.
+
+📂 Estrutura Atual do Frontend
+market-control-frontend/
 ├── index.html
-├── main.tsx (usava Toaster duplicado - corrigido)
-├── App.tsx (Toaster centralizado aqui)
-├── pages/Login.tsx (tratamento de erros de login com toast)
-├── pages/Register.tsx
-├── pages/Dashboard.tsx (botões "Sair" e "Lista de usuários" ajustados)
-├── components/UserListPopup.tsx (com botão individual de "Deletar")
-├── services/authService.ts (tratamento de erro no login)
-├── services/productService.ts
-├── services/userService.ts
-├── routes/PrivateRoute.tsx
-└── types/
+├── package.json
+├── tsconfig.json
+├── tailwind.config.js
+├── postcss.config.js
+└── src/
+    ├── main.tsx
+    ├── App.tsx
+    ├── pages/
+    │   ├── Login.tsx
+    │   ├── Register.tsx
+    │   └── Dashboard.tsx
+    ├── components/
+    │   ├── ThemeToggle.tsx
+    │   └── PageWrapper.tsx
+    └── styles/
+        └── index.css
 
-📦 backend/
-├── index.js (roteamento, JWT, auth, role check, delete user)
-├── db.sqlite (banco real com tabelas users e products)
-├── package.json (script "server" com nodemon)
+📊 Resumo
+- Frontend: Versão v2.0-beta (UI Upgrade)
+- Backend: Continua na versão v1.0 (estável)
 
-🧪 TESTES E FIXES IMPORTANTES
------------------------------
-- Login de usuário inexistente agora mostra erro no toast
-- Toasts duplicados resolvidos (remoção do Toaster em main.tsx)
-- Correção visual do botão "Lista de usuários" (abaixo do "Sair")
-- Toasts centralizados com <Toaster position="top-center" />
+O projeto agora possui interface moderna, responsiva e preparada para escala, sem alterar a lógica consolidada do backend.
 
-🗂️ VERSÃO ATUAL
----------------
-✔️ Versão 1.0 estável salva oficialmente após revisão completa.
-✔️ Tudo testado: login, permissões, toasts, painel, exclusões.
-
-
+📌 Importante:
+Todas futuras melhorias serão baseadas nesta versão 1.5 do projeto salvo.

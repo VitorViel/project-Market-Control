@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getAllUsers, updateUserRole } from "../services/userService";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
+import { Trash2, X } from "lucide-react";
 
 interface User {
   id: number;
@@ -70,17 +71,24 @@ const UserListPopup = ({ onClose }: Props) => {
         transition={{ duration: 0.2 }}
         className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-xl w-full max-w-2xl"
       >
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
             Usuários cadastrados
           </h2>
-          <button
-            className="text-red-600 hover:underline"
+
+          {/* Botão Fechar estilizado */}
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0px 0px 8px rgba(248, 113, 113, 0.6)",
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1 text-red-600 hover:text-red-800 transition"
             onClick={onClose}
             title="Fechar janela"
           >
-            ❌ Fechar
-          </button>
+            <X size={20} /> Fechar
+          </motion.button>
         </div>
 
         {loading ? (
@@ -100,24 +108,52 @@ const UserListPopup = ({ onClose }: Props) => {
                 <tr key={user.id} className="border-t dark:border-gray-700 text-sm">
                   <td className="p-2">{user.fullName}</td>
                   <td className="p-2">{user.email}</td>
+
+                  {/* Cargo protegido para admin@teste */}
                   <td className="p-2">
-                    <select
-                      className="border rounded px-2 py-1 bg-white text-black dark:text-black"
-                      value={user.role}
-                      onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                    >
-                      <option value="vendedor">vendedor</option>
-                      <option value="admin">admin</option>
-                    </select>
+                    {user.email === "admin@teste" ? (
+                      <span
+                        className="inline-block bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm px-2 py-1 rounded cursor-not-allowed"
+                        title="Cargo protegido"
+                      >
+                        admin
+                      </span>
+                    ) : (
+                      <select
+                        className="border rounded px-2 py-1 bg-white text-black dark:text-black"
+                        value={user.role}
+                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                      >
+                        <option value="vendedor">vendedor</option>
+                        <option value="admin">admin</option>
+                      </select>
+                    )}
                   </td>
+
+                  {/* Ação deletar protegida para admin@teste */}
                   <td className="p-2">
-                    <button
-                      className="text-red-600 hover:underline"
-                      onClick={() => handleDelete(user.id)}
-                      title="Excluir usuário"
-                    >
-                      🗑️ Deletar
-                    </button>
+                    {user.email === "admin@teste" ? (
+                      <motion.button
+                        className="text-gray-400 flex items-center gap-1 cursor-not-allowed"
+                        disabled
+                        title="Este usuário não pode ser removido"
+                      >
+                        <Trash2 size={18} /> Protegido
+                      </motion.button>
+                    ) : (
+                      <motion.button
+                        whileHover={{
+                          scale: 1.05,
+                          boxShadow: "0px 0px 8px rgba(248, 113, 113, 0.6)",
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-1 text-red-600 hover:text-red-800 transition"
+                        onClick={() => handleDelete(user.id)}
+                        title="Excluir usuário"
+                      >
+                        <Trash2 size={18} /> Deletar
+                      </motion.button>
+                    )}
                   </td>
                 </tr>
               ))}

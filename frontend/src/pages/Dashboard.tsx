@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import UserListPopup from "../components/UserListPopup";
 import UserAvatar from "../components/UserAvatar";
 import { ThemeToggle } from "../components/ThemeToggle";
-import PageWrapper from "../components/PageWrapper"; // 💫 Import do wrapper com animação
-import { AnimatePresence } from "framer-motion";
+import PageWrapper from "../components/PageWrapper";
+import { AnimatePresence, motion } from "framer-motion"; // ✅ Framer Motion
+import { Pencil, Trash2 } from "lucide-react"; // ✅ Ícones de ação
 
 export default function Dashboard() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -64,7 +65,6 @@ export default function Dashboard() {
   return (
     <PageWrapper>
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 text-gray-800 dark:text-gray-100 transition-colors duration-500 relative">
-
         {/* Topo com usuário, avatar e botões */}
         <div className="flex justify-between items-start mb-6">
           <div>
@@ -135,24 +135,37 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {products.map((p) => (
-                  <tr key={p.id} className="border-t">
+                  <tr key={p.id} className="border-t dark:border-gray-700">
                     <td className="p-2">{p.id}</td>
                     <td className="p-2">{p.name}</td>
                     <td className="p-2">R$ {p.price.toFixed(2)}</td>
                     <td className="p-2">{p.quantity}</td>
                     <td className="p-2 flex gap-2">
-                      <button
-                        className="text-yellow-600"
+                      <motion.button
+                        whileHover={{
+                          scale: 1.05,
+                          boxShadow: "0px 0px 8px rgba(234, 179, 8, 0.6)",
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="text-yellow-500 hover:text-yellow-600 flex items-center gap-1 transition"
                         onClick={() => handleEdit(p)}
+                        title="Editar produto"
                       >
-                        Editar
-                      </button>
-                      <button
-                        className="text-red-600"
+                        <Pencil size={16} /> Editar
+                      </motion.button>
+
+                      <motion.button
+                        whileHover={{
+                          scale: 1.05,
+                          boxShadow: "0px 0px 8px rgba(239, 68, 68, 0.6)",
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="text-red-600 hover:text-red-700 flex items-center gap-1 transition"
                         onClick={() => handleDelete(p.id)}
+                        title="Excluir produto"
                       >
-                        Excluir
-                      </button>
+                        <Trash2 size={16} /> Excluir
+                      </motion.button>
                     </td>
                   </tr>
                 ))}
