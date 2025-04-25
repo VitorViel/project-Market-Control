@@ -58,7 +58,7 @@ market-control-frontend/
         └── index.css
 
 📊 Resumo
-- Frontend: Versão v2.0-beta (UI Upgrade)
+- Frontend: Versão v1.5 (UI Upgrade)
 - Backend: Continua na versão v1.0 (estável)
 
 O projeto agora possui interface moderna, responsiva e preparada para escala, sem alterar a lógica consolidada do backend.
