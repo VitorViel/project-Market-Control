@@ -27,13 +27,13 @@ export default function Login() {
           <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
           <input
-            className="w-full mb-4 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="email"
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            className="w-full mb-4 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="password"
             placeholder="Senha"
             onChange={(e) => setPassword(e.target.value)}
