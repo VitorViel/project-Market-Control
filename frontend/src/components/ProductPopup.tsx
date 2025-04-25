@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Product } from "../types/Product";
 import { addProduct, updateProduct } from "../services/productService";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 interface Props {
   onClose: () => void;
@@ -18,9 +19,11 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
+  const idInputRef = useRef<HTMLInputElement>(null); // ✅ cria a referência para o input
 
   useEffect(() => {
     if (product) setForm(product);
+    idInputRef.current?.focus(); // ✅ foca automaticamente no abrir
   }, [product]);
 
   const handleSubmit = async () => {
@@ -53,15 +56,22 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-6 text-gray-800">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: -20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: -20 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-2xl w-full max-w-md"
+      >
+        <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
           {product ? "Editar" : "Novo"} Produto
         </h2>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">ID</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">ID</label>
           <input
-            className={`w-full p-2 border rounded ${errors.id ? "border-red-500" : ""}`}
+            ref={idInputRef} // ✅ adiciona ref aqui
+            className={`w-full p-2 border rounded bg-white text-black dark:text-black ${errors.id ? "border-red-500" : ""}`}
             disabled={!!product}
             value={form.id}
             onChange={(e) => setForm({ ...form, id: e.target.value })}
@@ -69,18 +79,18 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome</label>
           <input
-            className={`w-full p-2 border rounded ${errors.name ? "border-red-500" : ""}`}
+            className={`w-full p-2 border rounded bg-white text-black dark:text-black ${errors.name ? "border-red-500" : ""}`}
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Preço</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Preço</label>
           <input
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded bg-white text-black dark:text-black"
             type="number"
             value={form.price}
             onChange={(e) => setForm({ ...form, price: +e.target.value })}
@@ -88,9 +98,9 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Quantidade</label>
           <input
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded bg-white text-black dark:text-black"
             type="number"
             value={form.quantity}
             onChange={(e) => setForm({ ...form, quantity: +e.target.value })}
@@ -111,7 +121,7 @@ const ProductPopup = ({ onClose, refresh, product }: Props) => {
             Cancelar
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
