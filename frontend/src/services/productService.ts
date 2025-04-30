@@ -1,62 +1,26 @@
-import { Product } from "../types/Product";
+import { supabase } from './supabaseClient';
+import { Product } from '../types/Product';
 
-const API = "http://localhost:3001";
-
-// ✅ Adiciona token nas requisições
-const getAuth = () => ({
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
-});
-
-// ✅ Buscar todos os produtos
 export const getProducts = async (): Promise<Product[]> => {
-  const res = await fetch(`${API}/products`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuth(),
-    },
-  });
-
-  if (!res.ok) throw new Error("Erro ao buscar produtos");
-  return res.json();
+  const { data, error } = await supabase.from('products').select('*');
+  if (error) throw new Error(error.message);
+  return data as Product[];
 };
 
-// ✅ Adicionar novo produto
-export const addProduct = async (product: Product) => {
-  const res = await fetch(`${API}/products`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuth(),
-    },
-    body: JSON.stringify(product),
-  });
-
-  if (!res.ok) throw new Error("Erro ao adicionar produto");
+export const createProduct = async (product: Omit<Product, 'id'>) => {
+  const { error } = await supabase.from('products').insert([product]);
+  if (error) throw new Error(error.message);
 };
 
-// ✅ Atualizar produto existente
-export const updateProduct = async (product: Product) => {
-  const res = await fetch(`${API}/products/${product.id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuth(),
-    },
-    body: JSON.stringify(product),
-  });
-
-  if (!res.ok) throw new Error("Erro ao atualizar produto");
+export const updateProduct = async (id: number, product: Omit<Product, 'id'>) => {
+  const { error } = await supabase
+    .from('products')
+    .update(product)
+    .eq('id', id);
+  if (error) throw new Error(error.message);
 };
 
-// ✅ Excluir produto
-export const deleteProduct = async (id: string) => {
-  const res = await fetch(`${API}/products/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuth(),
-    },
-  });
-
-  if (!res.ok) throw new Error("Erro ao excluir produto");
+export const deleteProduct = async (id: number) => {
+  const { error } = await supabase.from('products').delete().eq('id', id);
+  if (error) throw new Error(error.message);
 };

@@ -3,23 +3,38 @@ import { useNavigate } from "react-router-dom";
 import { register } from "../services/authService";
 import toast from "react-hot-toast";
 import { ThemeToggle } from "../components/ThemeToggle";
-import PageWrapper from "../components/PageWrapper"; // 💫 Wrapper animado
+import PageWrapper from "../components/PageWrapper";
 
 export default function Register() {
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async () => {
+    if (!name || !email || !password) {
+      toast.error("Preencha todos os campos!");
+      return;
+    }
+    console.log("🧠 Dados do cadastro:", { name, email, password });
+  
+    setLoading(true);
+    console.log("Tentando registrar:", { email, password, name });
+  
     try {
-      await register(email, password, fullName);
+      const user = await register(email, password, name);
+      console.log("✅ Usuário registrado:", user);
       toast.success("Cadastro realizado com sucesso!");
       navigate("/");
-    } catch (err) {
-      toast.error("Erro ao cadastrar");
+    } catch (err: any) {
+      console.error("❌ Erro no register:", err);
+      toast.error(err.message || "Erro ao cadastrar.");
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   return (
     <PageWrapper>
@@ -31,13 +46,16 @@ export default function Register() {
             className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="text"
             placeholder="Nome Completo"
-            onChange={(e) => setFullName(e.target.value)}
+            autoFocus
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <input
             className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="email"
             placeholder="Email"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
@@ -45,6 +63,7 @@ export default function Register() {
             className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             type="password"
             placeholder="Senha"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
@@ -71,10 +90,15 @@ export default function Register() {
           </div>
 
           <button
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+            className={`w-full py-2 rounded transition ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 text-white"
+            }`}
             onClick={handleRegister}
+            disabled={loading}
           >
-            Cadastrar
+            {loading ? "Cadastrando..." : "Cadastrar"}
           </button>
 
           <p className="mt-4 text-center text-sm">
