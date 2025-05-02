@@ -1,27 +1,26 @@
 # Node modules
-frontend/node_modules
-backend/node_modules
+frontend/node_modules/
 
 # Builds
-frontend/dist
-frontend/build
+frontend/dist/
+frontend/build/
 
-# Ambiente
+# Ambiente (Supabase ou local)
 .env
-.env.local
+.env.*     # cobre .env.local, .env.production etc.
 
-# SQLite database
-backend/db.sqlite
-backend/*.sqlite
-
-# Logs e cache
+# Cache e logs
+.cache/
 *.log
-.cache
+
+# SQLite (desnecessário se já não usa mais)
+backend/*.sqlite
+backend/db.sqlite
 
 # IDEs
-.vscode
-.idea
+.vscode/
+.idea/
 
-# SO
+# Sistema operacional
 .DS_Store
 Thumbs.db
