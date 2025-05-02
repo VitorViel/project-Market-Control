@@ -4,11 +4,13 @@ import { register } from "../services/authService";
 import toast from "react-hot-toast";
 import { ThemeToggle } from "../components/ThemeToggle";
 import PageWrapper from "../components/PageWrapper";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -17,14 +19,15 @@ export default function Register() {
       toast.error("Preencha todos os campos!");
       return;
     }
-    console.log("🧠 Dados do cadastro:", { name, email, password });
-  
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Email inválido");
+      return;
+    }
+
     setLoading(true);
-    console.log("Tentando registrar:", { email, password, name });
-  
     try {
       const user = await register(email, password, name);
-      console.log("✅ Usuário registrado:", user);
       toast.success("Cadastro realizado com sucesso!");
       navigate("/");
     } catch (err: any) {
@@ -34,7 +37,6 @@ export default function Register() {
       setLoading(false);
     }
   };
-  
 
   return (
     <PageWrapper>
@@ -59,13 +61,23 @@ export default function Register() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <input
-            className="w-full mb-4 p-2 border rounded bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            type="password"
-            placeholder="Senha"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div className="relative mb-4">
+            <input
+              className="w-full p-2 pr-10 border rounded bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type={showPassword ? "text" : "password"}
+              placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-2 text-gray-500 hover:text-gray-700 dark:text-gray-300"
+              title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
 
           <div className="mb-6">
             <label

@@ -1,11 +1,14 @@
-const API_URL = "https://syyqvxcgrahaqerlrtyg.supabase.co/rest/v1/users"; // URL correta da tabela
-const API_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5eXF2eGNncmFoYXFlcmxydHlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYwMTI2MDEsImV4cCI6MjA2MTU4ODYwMX0.eqw48cOPn3uSBAmkw5V-3dFdJ_UxQnqVHm2d_WFFTBQ";
+const API_URL = "https://syyqvxcgrahaqerlrtyg.supabase.co/rest/v1/users";
 
-const headers = {
-  apikey: API_KEY,
-  Authorization: `Bearer hThWP8/+y5YS4xGFtqwiA7nPCoSPsafYErtsaHYePiIY8H2mGtw8ypR+HExW9TjnQflX/IEllQLbTeeaYQJgoQ==`,
-  "Content-Type": "application/json",
+const getHeaders = () => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("Usuário não autenticado.");
+
+  return {
+    apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
 };
 
 /**
@@ -13,10 +16,16 @@ const headers = {
  */
 export const getAllUsers = async () => {
   try {
-    const res = await fetch(API_URL, { headers });
+    const res = await fetch(API_URL, {
+      headers: getHeaders(),
+    });
+
     if (!res.ok) {
+      const text = await res.text();
+      console.error("Resposta Supabase:", text);
       throw new Error(`Erro ao buscar usuários: ${res.statusText}`);
     }
+
     return res.json();
   } catch (error) {
     console.error(error);
@@ -27,11 +36,11 @@ export const getAllUsers = async () => {
 /**
  * Atualizar o cargo de um usuário
  */
-export const updateUserRole = async (id: number, newRole: string) => {
+export const updateUserRole = async (id: string, newRole: string) => {
   try {
     const res = await fetch(`${API_URL}?id=eq.${id}`, {
       method: "PATCH",
-      headers,
+      headers: getHeaders(),
       body: JSON.stringify({ role: newRole }),
     });
 
@@ -48,11 +57,11 @@ export const updateUserRole = async (id: number, newRole: string) => {
 /**
  * Deletar um usuário
  */
-export const deleteUser = async (id: number) => {
+export const deleteUser = async (id: string) => {
   try {
     const res = await fetch(`${API_URL}?id=eq.${id}`, {
       method: "DELETE",
-      headers,
+      headers: getHeaders(),
     });
 
     if (!res.ok) {
@@ -62,5 +71,26 @@ export const deleteUser = async (id: number) => {
   } catch (error) {
     console.error(error);
     throw new Error("Falha ao excluir o usuário");
+  }
+};
+
+/**
+ * Atualizar o nome de um usuário
+ */
+export const updateUserName = async (id: string, newName: string) => {
+  try {
+    const res = await fetch(`${API_URL}?id=eq.${id}`, {
+      method: "PATCH",
+      headers: getHeaders(),
+      body: JSON.stringify({ name: newName }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Erro ao atualizar nome: ${res.statusText}`);
+    }
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Falha ao atualizar o nome");
   }
 };

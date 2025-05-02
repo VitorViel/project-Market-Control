@@ -23,7 +23,6 @@ export const register = async (email: string, password: string, name: string) =>
   }
 };
 
-
 export const login = async (email: string, password: string) => {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -35,15 +34,32 @@ export const login = async (email: string, password: string) => {
     const { user, session } = data;
     if (!user || !session) throw new Error("Falha no login.");
 
-    localStorage.setItem("token", session.access_token);
-    localStorage.setItem("user", JSON.stringify(user));
+    // Buscar role e nome da tabela "users"
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("role, name")
+      .eq("id", user.id)
+      .single();
 
-    return { user, token: session.access_token };
+    if (userError || !userData) throw new Error("Erro ao buscar dados do usuário.");
+
+    // Montar user final com nome e role para o localStorage
+    const fullUser = {
+      ...user,
+      role: userData.role,
+      user_metadata: {
+        name: userData.name,
+      },
+    };
+
+    localStorage.setItem("token", session.access_token);
+    localStorage.setItem("user", JSON.stringify(fullUser));
+
+    return { user: fullUser, token: session.access_token };
   } catch (err: any) {
     throw new Error(err.message || "Erro ao fazer login.");
   }
 };
-
 
 export const logout = async () => {
   await supabase.auth.signOut();

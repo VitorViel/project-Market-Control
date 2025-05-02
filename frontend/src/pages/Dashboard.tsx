@@ -1,4 +1,3 @@
-// ...imports mantidos
 import React, { useEffect, useMemo, useState } from "react";
 import { Product } from "../types/Product";
 import { getProducts, deleteProduct } from "../services/productService";
@@ -18,27 +17,27 @@ export default function Dashboard() {
   const [userPopupOpen, setUserPopupOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+
+  const [userName, setUserName] = useState("Usuário");
+  const [userRole, setUserRole] = useState("Não informado");
+
   const navigate = useNavigate();
 
-const [userName, setUserName] = useState("Usuário");
-const [userRole, setUserRole] = useState("Não informado");
-
-useEffect(() => {
-  try {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      const user = JSON.parse(savedUser);
-      const name = user.user_metadata?.name || "Usuário";
-      const role = user.role || "Não informado";
-      setUserName(name);
-      setUserRole(role);
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem("user");
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+        const name = user.user_metadata?.name || "Usuário";
+        const role = user.role || "Não informado";
+        setUserName(name);
+        setUserRole(role);
+      }
+    } catch {
+      setUserName("Usuário");
+      setUserRole("Não informado");
     }
-  } catch {
-    setUserName("Usuário");
-    setUserRole("Não informado");
-  }
-}, []);
-
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -94,24 +93,22 @@ useEffect(() => {
       <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 text-gray-800 dark:text-gray-100 transition-colors duration-500 relative">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h1 className="text-2xl font-bold">
-              Bem-vindo, {(user as any).name || "Usuário"}
-            </h1>
+            <h1 className="text-2xl font-bold">Bem-vindo, {userName}</h1>
             <p className="text-sm text-gray-600 dark:text-gray-300">
-              Cargo: {(user as any).role || "Não informado"}
+              Cargo: {userRole}
             </p>
           </div>
 
           <div className="flex flex-col items-end gap-2">
-            {(user as any).name && (
+            {userName && (
               <UserAvatar
-                name={(user as any).name}
-                role={(user as any).role}
+                name={userName}
+                role={userRole}
                 onLogout={handleLogout}
               />
             )}
 
-            {(user as any).role === "admin" && (
+            {userRole === "admin" && (
               <button
                 className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
                 onClick={() => setUserPopupOpen(true)}
@@ -242,7 +239,7 @@ useEffect(() => {
               product={editingProduct}
             />
           )}
-          {userPopupOpen && (
+          {userPopupOpen && userRole === "admin" && (
             <UserListPopup onClose={() => setUserPopupOpen(false)} />
           )}
         </AnimatePresence>
