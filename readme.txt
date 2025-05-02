@@ -54,8 +54,6 @@ http://localhost:5173
 Email: admin@teste.com
 Senha: 123123
 
-Caso o banco não venha pré-carregado, execute o app "criar_admin.bat", localizado na pasta raíz do projeto e realize o login novamente com as credenciais citadas acima
-
 ---
 
 📋 Observações:
