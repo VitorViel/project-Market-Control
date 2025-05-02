@@ -1,4 +1,3 @@
-
 📦 PROJETO: MARKET-CONTROL
 ==========================
 
@@ -12,56 +11,67 @@ Sistema de controle de mercado com:
 - Admins podem promover usuários e deletar outros usuários
 - UI responsiva com Tailwind e React 18 (Vite)
 
-📄 README - Alterações Market-Control (Versão 1.5)
+# 🚀 Versão 3.0 – Release oficial do Market-Control
 
-📌 Base
-- Backend: Versão 1.0 estável (sem alterações)
-- Frontend: Atualizado com melhorias visuais e estruturais
+Histórico completo de melhorias desde a versão inicial do sistema.
 
-✅ Melhorias Aplicadas no Frontend
+---
 
-Interface e Experiência do Usuário
-- 🌗 Modo Claro/Escuro: Adicionado botão de alternância de tema (ícones de lua/sol) com persistência automática.
-- 🎞️ Animações Suaves: Implementadas animações de entrada/saída usando Framer Motion para páginas e popups.
-- 🚪 Transições de Páginas: Todas as rotas (Login, Register, Dashboard) com transição suave.
-- 💬 Sistema de Toasts Melhorado: Feedback de ações agora exibido de forma centralizada e estilizada.
-- 🔍 AutoFocus em Popups: Campo ID do produto recebe foco automático ao abrir a janela de cadastro/edição.
-- 🦴 Skeleton Loaders: Indicadores visuais durante carregamento de produtos e usuários.
-- 🖋️ Ícones em Ações: Botões de Editar (✏️) e Deletar (🗑️) com hover animado nos produtos e usuários.
-- 🧩 Responsividade Aprimorada: Layout adaptado para dispositivos menores, incluindo posicionamento do botão de tema.
+## ✅ Funcionalidades iniciais (v1.0)
+- Login e cadastro com JWT
+- Painel principal com listagem de produtos
+- CRUD de produtos (adicionar, editar, remover)
+- Controle de acesso por role (`vendedor` e `admin`)
+- Popup de listagem de usuários acessível apenas para admins
+- Botão de logout funcional
+- Backend em Node.js + Express + SQLite
+- Frontend com React 18 + Vite + TypeScript + Tailwind
 
-Estrutura de Código
-- 🧱 Projeto Frontend migrado para Vite + React 18 + TypeScript + TailwindCSS
-- 🔗 React Router DOM implementado: Rotas entre páginas configuradas com animações.
-- 🎨 DarkMode controlado por next-themes: Persistência de tema no navegador.
-- 📁 Organização Modular: Componentes criados para ThemeToggle, PageWrapper, e melhorias de estilização.
-- ⚡ TailwindCSS otimizado: Uso de classes utilitárias modernas no projeto.
+---
 
-📂 Estrutura Atual do Frontend
-market-control-frontend/
-├── index.html
-├── package.json
-├── tsconfig.json
-├── tailwind.config.js
-├── postcss.config.js
-└── src/
-    ├── main.tsx
-    ├── App.tsx
-    ├── pages/
-    │   ├── Login.tsx
-    │   ├── Register.tsx
-    │   └── Dashboard.tsx
-    ├── components/
-    │   ├── ThemeToggle.tsx
-    │   └── PageWrapper.tsx
-    └── styles/
-        └── index.css
+## 🆕 Versão 2.x – Melhorias progressivas
 
-📊 Resumo
-- Frontend: Versão v1.5 (UI Upgrade)
-- Backend: Continua na versão v1.0 (estável)
+### 🔹 v2.0 a v2.2 – Interface e usabilidade
+- Modo claro/escuro com toggle no canto inferior direito
+- Animações suaves usando Framer Motion
+- Skeleton loaders durante carregamentos
+- Autofocus em campos de login/cadastro
+- Toast centralizado com estilo unificado
+- Tooltips em ícones e botões de ação
+- Responsividade aprimorada em todas as telas
+- Layout do dashboard reorganizado
 
-O projeto agora possui interface moderna, responsiva e preparada para escala, sem alterar a lógica consolidada do backend.
+### 🔹 v2.3 – Controle de usuários aprimorado
+- Proteção para o usuário `admin@teste.com` (não pode ser editado nem excluído)
+- Cargo de admin fixado como texto (não editável)
+- Botão "Excluir" adicionado individualmente por usuário
+- Confirmação antes de deletar usuários
+- Verificação da role no backend para garantir consistência
 
-📌 Importante:
-Todas futuras melhorias serão baseadas nesta versão 1.5 do projeto salvo.
+### 🔹 v2.4 – Integração Supabase + identidade visual
+- Frontend integrado com Supabase (REST API)
+- Produtos e usuários migrados para tabelas do Supabase
+- Tokens dinâmicos usados no `userService.ts` via `localStorage`
+- Adicionado favicon personalizado no navegador
+- Corrigido uso de `import.meta.env` com `vite-env.d.ts`
+
+### 🔹 v2.5 – Ajustes finos de experiência
+- Adicionado botão de mostrar senha (ícone de olho) no login/cadastro
+- Alternância entre senha visível e oculta com ícones interativos
+- Correção visual de inputs no modo escuro
+
+---
+
+## 🔐 Versão 3.0 – Segurança e edição refinadas
+- Nova permissão de edição de nome:
+  - Admin pode editar **vendedores**
+  - Admin pode editar **seu próprio nome**
+  - Admin **não pode editar outros admins**
+- Campo de nome com `<input>` reativo inline
+- Chamada `updateUserName()` implementada no `userService.ts`
+- Atualização automática da lista após edição
+- Correções finais de estrutura e validação de uso do `PageWrapper`
+
+---
+
+🎯 Projeto 100% funcional, responsivo, com segurança de roles e integração completa com Supabase.
