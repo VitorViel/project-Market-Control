@@ -1,4 +1,4 @@
-📦 PROJETO: MARKET-CONTROL
+📦 Projeto: MARKET-CONTROL
 ==========================
 
 📝 DESCRIÇÃO GERAL

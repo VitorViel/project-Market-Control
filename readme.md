@@ -1,4 +1,5 @@
 📦 Market Control - Sistema de Controle de Produtos
+===================================================
 
 Sistema de gerenciamento de produtos com autenticação, controle de usuários (admin e vendedor), tema dark/light, animações com Framer Motion e integração total com Supabase.
 
