@@ -20,6 +20,7 @@ Sistema de gerenciamento de produtos com autenticação, controle de usuários (
 ```bash
 git clone https://github.com/seu-user/market-control.git
 cd market-control
+cd frontend
 ```
 
 ---
