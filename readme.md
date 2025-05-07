@@ -1,66 +1,89 @@
 📦 Market Control - Sistema de Controle de Produtos
 
-Este é um sistema web completo para controle de produtos em um mercado.
-Inclui login, cadastro, painel administrativo e permissões por cargo (admin/vendedor).
+Sistema de gerenciamento de produtos com autenticação, controle de usuários (admin e vendedor), tema dark/light, animações com Framer Motion e integração total com Supabase.
 
 ---
 
-✅ Pré-requisitos:
+## 🚀 Como rodar o projeto
 
-1. Node.js instalado (https://nodejs.org)
-2. Qualquer editor de código (recomendado: VS Code)
+### 1. Pré-requisitos
 
----
-
-🚀 Como rodar o projeto:
-
-1. Clone o repositório:
-
-git clone https://github.com/VitorViel/project-Market-Control.git
-cd project-Market-Control
-
-2. Abra dois terminais separados:
+- [Node.js 18+](https://nodejs.org/) instalado
+- Acesso ao repositório do projeto
+- Conta no [Supabase](https://supabase.com/) (caso precise criar seu próprio backend)
 
 ---
 
-📦 Terminal 1: BACKEND
+### 2. Clonar o repositório
 
-cd backend
+```bash
+git clone https://github.com/seu-user/market-control.git
+cd market-control
+```
+
+---
+
+### 3. Instalar as dependências
+
+```bash
 npm install
-npm run dev
-
-> Isso inicia o servidor backend (porta 3001)
+```
 
 ---
 
-💻 Terminal 2: FRONTEND
+### 4. Configurar o arquivo `.env`
 
-cd frontend
+Crie um arquivo `.env` na raiz da pasta frontend com as seguintes variáveis (disponíveis no painel do Supabase):
+
+```env
+VITE_SUPABASE_URL=https://SEU-PROJETO.supabase.co
+VITE_SUPABASE_ANON_KEY=sua-anon-key-aqui
+```
+
+---
+
+### 5. Rodar o projeto
+
+```bash
+npm run dev
+```
+
+> A aplicação será acessível em `http://localhost:5173`
+
+---
+
+## 🛠️ Tecnologias
+
+- React 18 + Vite
+- TypeScript
+- TailwindCSS
+- Framer Motion
+- Supabase (Auth + REST API)
+
+---
+
+## 📦 Funcionalidades
+
+- Cadastro e login de usuários
+- Diferenciação de papéis: `admin` e `vendedor`
+- CRUD de produtos
+- Listagem e gerenciamento de usuários (admins)
+- Tema claro/escuro com toggle
+- Animações de entrada/saída suaves
+- Skeleton loaders e autofocus em formulários
+- Integração direta com Supabase (sem backend local)
+
+---
+
+## 💡 Dica extra
+
+Caso enfrente problemas ao instalar pacotes:
+
+```bash
+rm -rf node_modules
+rm package-lock.json
 npm install
-npm run dev
-
-> Isso inicia o site no navegador (porta 5173)
-
----
-
-🌐 Acesse no navegador:
-
-http://localhost:5173
-
----
-
-🔐 Login de admin para testes (caso banco venha pré-carregado):
-
-Email: admin@teste.com
-Senha: 123123
-
----
-
-📋 Observações:
-
-- Todos os usuários novos são cadastrados como **vendedor**
-- Somente **admins** conseguem ver o botão "Lista de usuários"
-- Admins podem promover ou rebaixar cargos de usuários
+```
 
 ---
 
@@ -129,3 +152,5 @@ Com a migração para Supabase, o projeto:
 - 💪 Ganhou segurança e escalabilidade nativas
 
 ---
+
+Feito com 💻 e ☕ por **Vitor Viel**

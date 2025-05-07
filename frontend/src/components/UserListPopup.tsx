@@ -25,6 +25,10 @@ const UserListPopup = ({ onClose }: Props) => {
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState("");
   const [userRole, setUserRole] = useState("");
+  const [editedUsers, setEditedUsers] = useState<{
+    [key: string]: Partial<User>;
+  }>({});
+  const [isSaving, setIsSaving] = useState(false);
 
   const fetchUsers = async () => {
     try {
@@ -37,39 +41,35 @@ const UserListPopup = ({ onClose }: Props) => {
     }
   };
 
-  const handleRoleChange = async (id: string, newRole: string) => {
-    const isChangingSelf = id === currentUserId;
-
-    if (isChangingSelf) {
-      const confirmSelf = confirm(
-        "⚠️ Você está alterando o seu próprio cargo.\nDeseja continuar?\nVocê será desconectado e precisará fazer login novamente."
-      );
-      if (!confirmSelf) return;
-    }
-
-    try {
-      await updateUserRole(id, newRole);
-      toast.success("Cargo atualizado!");
-
-      if (isChangingSelf) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        window.location.href = "/";
-      } else {
-        fetchUsers();
-      }
-    } catch (err) {
-      toast.error("Erro ao atualizar cargo");
-    }
+  const handleRoleChange = (id: string, newRole: string) => {
+    setEditedUsers((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], role: newRole },
+    }));
   };
 
-  const handleNameChange = async (id: string, newName: string) => {
+  const handleNameChange = (id: string, newName: string) => {
+    setEditedUsers((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], name: newName },
+    }));
+  };
+
+  const handleSaveChanges = async () => {
+    setIsSaving(true);
     try {
-      await updateUserName(id, newName);
-      toast.success("Nome atualizado!");
+      for (const userId in editedUsers) {
+        const updates = editedUsers[userId];
+        if (updates.name) await updateUserName(userId, updates.name);
+        if (updates.role) await updateUserRole(userId, updates.role);
+      }
+      toast.success("Alterações salvas com sucesso!");
+      setEditedUsers({});
       fetchUsers();
     } catch (err) {
-      toast.error("Erro ao atualizar nome");
+      toast.error("Erro ao salvar alterações");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -134,13 +134,15 @@ const UserListPopup = ({ onClose }: Props) => {
                     userRole === "admin" &&
                     (u.role === "vendedor" || u.id === currentUserId);
 
+                  const pendingChanges = editedUsers[u.id] || {};
+
                   return (
                     <tr key={u.id} className="border-t dark:border-gray-700">
                       <td className="p-2 break-all">{u.id}</td>
                       <td className="p-2">
                         {canEditName ? (
                           <input
-                            value={u.name}
+                            value={pendingChanges.name ?? u.name}
                             onChange={(e) =>
                               handleNameChange(u.id, e.target.value)
                             }
@@ -158,7 +160,9 @@ const UserListPopup = ({ onClose }: Props) => {
                           </span>
                         ) : (
                           <select
-                            value={u.role || "vendedor"}
+                            value={
+                              (pendingChanges.role ?? u.role) || "vendedor"
+                            }
                             onChange={(e) =>
                               handleRoleChange(u.id, e.target.value)
                             }
@@ -190,6 +194,15 @@ const UserListPopup = ({ onClose }: Props) => {
         )}
 
         <div className="flex justify-end mt-6">
+          {Object.keys(editedUsers).length > 0 && (
+            <button
+              onClick={handleSaveChanges}
+              disabled={isSaving}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded mr-2 disabled:opacity-50"
+            >
+              {isSaving ? "Salvando..." : "Salvar"}
+            </button>
+          )}
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded"
