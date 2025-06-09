@@ -107,7 +107,7 @@ react-hot-toast	2.4+
 
 📦 BACKEND
 
-> Anteriormente, era necessário rodar localmente via terminal. Nesta nova versão 3.0, está em nuvem. Por isso, só é necessário a pasta 'fronted' para rodar o projeto completo com mais eficiência
+> Anteriormente, era necessário rodar localmente via terminal. Nesta nova versão 3.0, está em nuvem. Por isso, só é necessário a pasta 'frontend' para rodar o projeto completo com mais eficiência
 
 # ⚔️ Comparativo: Backend Local (Node.js + SQLite) vs Supabase (API REST)
 
